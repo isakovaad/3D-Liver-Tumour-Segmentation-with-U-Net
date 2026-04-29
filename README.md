@@ -2,14 +2,14 @@
 
 This project implements a 3D U-Net for liver and tumour segmentation on CT volumes from the LiTS (Liver Tumour Segmentation) challenge dataset. It was built as part of my preparation for doctoral research in medical image analysis, specifically to develop practical experience with volumetric deep learning pipelines before applying to the PhD position on personalised radiotheranostics at the Université libre de Bruxelles.
 
-The work covers the full pipeline from raw NIfTI data loading and CT windowing through model training, validation with Dice metrics, and prediction visualisation — implemented from scratch using PyTorch and MONAI on Kaggle's free GPU tier.
+The work covers the full pipeline from raw NIfTI data loading and CT windowing through model training, validation with Dice metrics, and prediction visualisation, implemented from scratch using PyTorch and MONAI on Kaggle's free GPU tier.
 <img width="780" height="511" alt="Screenshot 2026-04-29 at 2 13 01 PM" src="https://github.com/user-attachments/assets/2ef0843d-2c27-42f1-a46c-f2feef001432" />
 
 ---
 
 ## Motivation
 
-Radiotheranostics is an emerging approach in nuclear medicine that combines targeted molecular imaging with radionuclide therapy to enable patient-specific diagnosis and treatment. One of the core challenges in this space is building robust pipelines that can integrate heterogeneous imaging data — PET/SPECT, CT, MRI — and produce reliable anatomical segmentations that feed downstream patient stratification models.
+Radiotheranostics is an emerging approach in nuclear medicine that combines targeted molecular imaging with radionuclide therapy to enable patient-specific diagnosis and treatment. One of the core challenges in this space is building robust pipelines that can integrate heterogeneous imaging data — PET/SPECT, CT, MRI, and produce reliable anatomical segmentations that feed downstream patient stratification models.
 
 This project is a deliberate first step into that domain. Liver and tumour segmentation on CT is a well-studied benchmark that shares the fundamental difficulties of clinical imaging work: severe class imbalance, variable volume geometry, inconsistent voxel spacing across scanners, and the need to reason in three dimensions rather than treating each slice independently. Working through these problems concretely was more valuable to me than reading about them.
 
@@ -19,7 +19,7 @@ This project is a deliberate first step into that domain. Liver and tumour segme
 
 The LiTS dataset (Liver Tumour Segmentation Challenge) consists of 131 abdominal CT volumes with pixel-level annotations. Each volume is labelled at the voxel level with three classes: background (0), liver (1), and tumour (2). The dataset is publicly available on Kaggle via the `andrewmvd/liver-tumor-segmentation` repository.
 
-A key characteristic of this dataset is extreme class imbalance. In a typical volume, background voxels account for roughly 97% of the total, liver for around 2.8%, and tumour for under 0.01%. This distribution directly motivates the choice of DiceCE loss over standard cross-entropy, and it means that tumour Dice is a genuinely hard metric to move — a model can achieve high accuracy by predicting no tumour at all.
+A key characteristic of this dataset is extreme class imbalance. In a typical volume, background voxels account for roughly 97% of the total, liver for around 2.8%, and tumour for under 0.01%. This distribution directly motivates the choice of DiceCE loss over standard cross-entropy, and it means that tumour Dice is a genuinely hard metric to move. A model can achieve high accuracy by predicting no tumour at all.
 
 Due to Kaggle dataset availability, 51 volumes had matched image-segmentation pairs and were used for this experiment. The split was 40 volumes for training and 11 for validation.
 
@@ -42,7 +42,7 @@ Total parameters: 4,807,482
 Model size: ~19.2 MB (float32)
 ```
 
-The choice of 3D convolutions rather than 2D slice-by-slice processing is deliberate. Liver and tumour boundaries are three-dimensional structures — processing axial slices independently discards the contextual information in adjacent slices that makes segmentation tractable. The skip connections between encoder and decoder levels preserve the fine spatial detail that gets compressed during downsampling, which matters especially for small tumour regions.
+The choice of 3D convolutions rather than 2D slice-by-slice processing is deliberate. Liver and tumour boundaries are three-dimensional structures processing axial slices independently discards the contextual information in adjacent slices that makes segmentation tractable. The skip connections between encoder and decoder levels preserve the fine spatial detail that gets compressed during downsampling, which matters especially for small tumour regions.
 
 ---
 
