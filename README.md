@@ -1,6 +1,6 @@
 # 3D Liver Tumour Segmentation with U-Net
 
-This project implements a 3D U-Net for liver and tumour segmentation on CT volumes from the LiTS (Liver Tumour Segmentation) challenge dataset. It was built as part of my preparation for doctoral research in medical image analysis, specifically to develop practical experience with volumetric deep learning pipelines before applying to the PhD position on personalised radiotheranostics at the Université libre de Bruxelles.
+This project implements a 3D U-Net for liver and tumour segmentation on CT volumes from the LiTS (Liver Tumour Segmentation) challenge dataset. It was built as part of my preparation for doctoral research in medical image analysis, specifically to develop practical experience with volumetric deep learning pipelines.
 
 The work covers the full pipeline from raw NIfTI data loading and CT windowing through model training, validation with Dice metrics, and prediction visualisation, implemented from scratch using PyTorch and MONAI on Kaggle's free GPU tier.
 <img width="780" height="511" alt="Screenshot 2026-04-29 at 2 13 01 PM" src="https://github.com/user-attachments/assets/2ef0843d-2c27-42f1-a46c-f2feef001432" />
